@@ -6,38 +6,52 @@ type PairBool {
 
 // Returns the first element of a pair
 fst(pair: PairBool): Bool
-  ?a
+  case pair {
+    new: pair.fst
+  }
 
 // Returns the second element of a pair
 snd(pair: PairBool): Bool
-  ?b
+  case pair {
+    new: pair.snd
+  }
 
 // Returns true if both elements of a PairBool are identical
-eql_elements(a: PairBool): Bool 
-  ?c
+eql_elements(a: PairBool): Bool
+  case a {
+    new:
+      case a.fst a.snd {
+        true true: true
+        false false: true
+      } default false
+  }
   
 // Returns true if both Pairs are equal 
 // eql(PairBool.new(false, false), PairBool.new(true, true)) -> false 
 // eql(PairBool.new(true, false), PairBool.new(true, false)) -> true
 eql(a: PairBool, b: PairBool): Bool
-  ?f
+  case a b {
+    new new: Bool.and(Bool.eql(a.fst, b.fst), Bool.eql(a.snd, b.snd))
+  }
 
 // Returns true if both Pairs are different
 // not_eql(PairBool.new(false, false), PairBool.new(true, true)) -> true 
 // not_eql(PairBool.new(true, false), PairBool.new(true, false)) -> false
 not_eql(a: PairBool, b: PairBool): Bool
-  ?f
+  Bool.not(eql(a, b))
   
 // Creates a PairBool from 2 Booleans
 create(a: Bool, b: Bool): PairBool
-  ?h
+  PairBool.new(a, b)
 
 // Inverts the values of a PairBool
 // neg(PairBool.new(false, false) -> PairBool.new(true, true)
 // neg(PairBool.new(false, true) -> PairBool.new(true, false)
 neg(pair: PairBool): PairBool
-  ?i
+  case pair {
+    new: PairBool.new(Bool.not(pair.fst), Bool.not(pair.snd))
+  }
 
 // Inverts the 2 elements of a PairBool
 swap(pair: PairBool): PairBool 
-  ?k
+  PairBool.new(pair@snd, pair@fst)

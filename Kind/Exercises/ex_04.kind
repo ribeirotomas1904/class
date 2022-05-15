@@ -7,36 +7,55 @@ type Nat {
 
 // Doubles a number
 dbl(a: Nat): Nat // double
-
-  ?b
+  add(a, a)
 
 // Addition
 add(a: Nat, b: Nat): Nat
-
-  ?a
+  case b {
+    zero: a
+    succ: add(Nat.succ(a), b.pred)
+  }
 
 // Multiplication
 mul(a: Nat, b: Nat): Nat
-  
-  ?m
+  case b {
+    zero: Nat.zero
+    succ:
+      case b.pred {
+        zero: a
+        succ: add(a, mul(a, b.pred))
+      }
+  }
 
 // Subtraction
 // 4 - 5 = 0
 // 5 - 4 = 1
 sub(a: Nat, b: Nat): Nat
-
-  ?s
+  case a {
+    zero: Nat.zero
+    succ:
+      case b {
+        zero: a
+        succ: sub(a.pred, b.pred)
+      }
+  }
 
 // Factorial
 // 4! = 24
 fac(a: Nat): Nat 
-  
-  ?f
+  case a {
+    zero: Nat.succ(Nat.zero)
+    succ: mul(a, fac(a.pred))
+  }
 
 // Equal
 eql(a: Nat, b: Nat): Bool // Given 2 numbers, it returns true if the 2 are the same and false if they are different.
-  
-  ?e 
+  case a b {
+    zero zero: true
+    zero succ: false
+    succ zero: false
+    succ succ: eql(a.pred, b.pred)
+  }
 
 // Do not use the "not" function to create the functions below
 
@@ -44,15 +63,19 @@ eql(a: Nat, b: Nat): Bool // Given 2 numbers, it returns true if the 2 are the s
 // 2 > 1 = True
 // 3 > 3 = False
 gtn(a: Nat, b: Nat): Bool // if A > B == True else false
-  
-  ?g
+  case sub(a, b) {
+    zero: false
+    succ: true
+  }
 
 // Lower than
 // 1 < 2 = True
 // 3 < 3 = False
 ltn(a: Nat, b: Nat): Bool // if A > B == False else true 
-  
-  ?l
+  case sub(b, a) {
+    zero: false
+    succ: true
+  }
 
 // Minimum
 // min(2, 3) = 2
@@ -81,5 +104,15 @@ hlf(a: Nat): Nat
 // x / 0 = 0
 // 5 / 2 = 2
 div(a: Nat, b: Nat): Nat // division
-  
-  ?d
+  case b {
+    zero: Nat.zero
+    succ:
+      case a {
+        zero: Nat.zero
+        succ:
+          case gtn(b, a) {
+            true: Nat.zero
+            false: Nat.succ(div(sub(a, b), b))
+          }
+      }
+  }

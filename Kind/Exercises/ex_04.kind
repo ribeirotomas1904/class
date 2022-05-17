@@ -81,15 +81,19 @@ ltn(a: Nat, b: Nat): Bool // if A > B == False else true
 // min(2, 3) = 2
 // min(4, 1) = 1
 min(a: Nat, b: Nat): Nat // if A < B then A else B
-  
-  ?m2
+  case sub(a, b) {
+    zero: a
+    succ: b
+  }
 
 // Maximum
 // max(2, 3) = 3
 // max(4, 1) = 4
 max(a: Nat, b: Nat): Nat // if A > B then A else B
-  
-  ?m3
+  case sub(a, b) {
+    zero: b
+    succ: a
+  }
 
 
 // Divides a number by two
@@ -97,7 +101,7 @@ max(a: Nat, b: Nat): Nat // if A > B then A else B
 // 5 / 2 = 2
 // 1 / 2 = 0
 hlf(a: Nat): Nat
-  ?h
+  div(a, Nat.succ(Nat.succ(Nat.zero)))
 
 // Division
 // 1 / 2 = 0
